@@ -128,6 +128,15 @@
         </div>
         
         <div class="search-box">
+            <h2 style="margin-bottom: 20px;">📧 Get Contract Alerts</h2>
+            <p style="color: #8892b0; margin-bottom: 15px;">Enter your email to get notified when new contracts match your keywords.</p>
+            <input type="email" id="alertEmail" placeholder="your@email.com">
+            <input type="text" id="alertKeywords" placeholder="Keywords to watch (e.g., software, cloud, AI)">
+            <button onclick="subscribeAlerts()" style="background: #60a5fa;">🔔 Subscribe to Alerts</button>
+            <p id="subscribeMsg" style="color: #4ade80; margin-top: 10px; display: none;">✓ Thanks! You'll get alerts when matching contracts are posted.</p>
+        </div>
+        
+        <div class="search-box">
             <h2 style="margin-bottom: 20px;">🔍 Search Contracts</h2>
             <input type="text" id="keywords" placeholder="Enter keywords (e.g., software, cloud, AI)">
             <select id="naics">
@@ -244,6 +253,24 @@
         
         // Load some initial results
         searchContracts();
+        
+        function subscribeAlerts() {
+            const email = document.getElementById('alertEmail').value;
+            const keywords = document.getElementById('alertKeywords').value;
+            
+            if (!email || !email.includes('@')) {
+                alert('Please enter a valid email');
+                return;
+            }
+            
+            // Store in localStorage for now (MVP)
+            const subscribers = JSON.parse(localStorage.getItem('sam_alert_subs') || '[]');
+            subscribers.push({ email, keywords, date: new Date().toISOString() });
+            localStorage.setItem('sam_alert_subs', JSON.stringify(subscribers));
+            
+            document.getElementById('subscribeMsg').style.display = 'block';
+            console.log('New subscriber:', email, keywords);
+        }
     </script>
 </body>
 </html>
